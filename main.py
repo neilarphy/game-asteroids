@@ -9,17 +9,26 @@ def main():
     pygame.display.set_caption("Asteroids Game")
     clock = pygame.time.Clock()
     dt = 0
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+   
+    g_updatable = pygame.sprite.Group()
+    g_drawable = pygame.sprite.Group()
 
+    Player.containers = (g_updatable, g_drawable)
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     while True:
         # Обработка событий, чтобы можно было выйти из игры
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        player.update(dt)   
         screen.fill((0, 0, 0))
-        player.draw(screen)
+        
+        for obj in g_updatable:
+            obj.update(dt)
+
+        for obj in g_drawable:
+            obj.draw(screen)
+
         # Обновление экрана
         pygame.display.flip()
 
